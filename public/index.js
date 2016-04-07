@@ -18,6 +18,14 @@ var app = angular.module('horeca', ['ngRoute', 'ngSanitize'])
         templateUrl: 'public/views/explore-detail.html',
         controller: 'ExploreDetailController'
       }).
+      when('/users', {
+        templateUrl: 'public/views/users.html',
+        controller: 'UsersController'
+      }).
+      when('/users/:estId', {
+        templateUrl: 'public/views/users-detail.html',
+        controller: 'UsersDetailController'
+      }).
       otherwise({
         redirectTo: '/home'
       });

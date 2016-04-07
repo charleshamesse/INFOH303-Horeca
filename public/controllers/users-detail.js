@@ -1,13 +1,12 @@
 angular.module('horeca')
-.controller('ExploreController', function($scope, $http) {
-  $scope.establishments = [];
-  $scope.searchType = "all";
+.controller('UsersDetailController', function($scope, $routeParams, $http) {
+  $scope.u = {};
   // Get list
   $http({
     method: 'GET',
-    url: 'api/Restaurant.php'
+    url: 'api/User.php/' + $routeParams.estId
   }).then(function successCallback(response) {
-    $scope.establishments = angular.fromJson(response).data;
+    $scope.u = angular.fromJson(response).data[0];
     $scope.success = true;
   }, function errorCallback(response) {
     $scope.response = "Error: " + response;

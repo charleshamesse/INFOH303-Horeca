@@ -2,7 +2,7 @@
   <div class="page-header" id="banner">
     <div class="row">
       <div class="col-lg-12 col-md-12 col-sm-12"><br />
-        <h1>Explore</h1>
+        <h1>Users</h1>
         <p class="lead"></p>
       </div>
     </div>
@@ -10,11 +10,11 @@
 </div>
 <div class="container">
   <div class="row">
-  <div class="col-md-4">
-    <input type="text" class="form-control" ng-model="searchName" placeholder="Type any name, address, city.."></input>
+  <div class="col-md-3">
+    <input type="text" class="form-control" ng-model="searchName" placeholder="Search.."></input>
   </div>
-    <div class="col-md-4"></div>
-      <div class="col-md-4">
+    <div class="col-md-6"></div>
+      <div class="col-md-3">
       <select class="form-control" ng-model="searchType">
         <option value="all">All types</option>
         <option value="Restaurant">Restaurant</option>
@@ -31,22 +31,16 @@
           <tr>
             <th>#</th>
             <th>Name</th>
-            <th>Address</th>
-            <th>Location</th>
-            <th>Website</th>
-            <th>Phone</th>
+            <th>Mail Address</th>
             <th></th>
           </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="e in establishments | filter:searchName">
+          <tr ng-repeat="u in users | filter:searchName">
             <td>{{ $index+1 }}</td>
-            <td>{{ e.Name }}</td>
-            <td>{{ e.Address_Street}}, {{ e.Address_Num }}</td>
-            <td>{{ e.Address_City}} {{ e.Address_Zip }}</td>
-            <td>{{ e.Site }}</td>
-            <td>{{ e.Tel }}</td>
-            <td><a href="#explore/{{ e.id }}"><i class="fa fa-eye"></i></a></td>
+            <td>{{ u.Name }}</td>
+            <td>{{ u.MailAddress }}</td>
+            <td><a href="#users/{{ u.id }}"><i class="fa fa-eye"></i></a></td>
           </tr>
         </div>
       </div>
