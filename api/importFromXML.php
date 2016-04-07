@@ -69,7 +69,16 @@ if ($method == 'GET') {
   */
 }
 elseif ($method == 'POST') {
-  echo "Hi";
+
+  try {
+    $xml = new SimpleXMLElement($input['xml']);
+    $result = "Parsing succeeded.";
+    $result = $xml->Information->Name;
+  }
+  catch (Exception $e) {
+    $result = "Error parsing XML file: " . $e;
+  }
+  echo json_encode($result);
 }
 /*
 else {

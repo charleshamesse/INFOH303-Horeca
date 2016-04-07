@@ -11,21 +11,33 @@
 
 
 <div class="container">
-  <a class="anchor" id="courses"></a>
-  <h3>Request</h3>
   <div class="row">
     <div class="col-md-12">
-      {{ test }}
+      Need help?
+      <a href="" ng-show="!showExample" ng-click="showExample = true;">Show me an example XML file</a>
+      <a href="" ng-show="showExample" ng-click="showExample = false;">Okay I get it</a>
+       or <a href="" ng-click="copyExample();">copy example</a>
+
+      <div class="spacer10"></div>
+      <div ng-show="showExample">
+        <pre>{{ example }}</pre>
+      </div>
+      <textarea placeholder="Enter the XML description of your establishement.." class="form-control" rows="13" ng-model="input"></textarea>
+      <div class="spacer10"></div>
+      <div align="center">
+        <button class="btn btn-default" ng-click="post();">Post</button>
+      </div>
     </div>
   </div>
 </div>
-
-<div class="container">
-  <a class="anchor" id="courses"></a>
-  <h3>Result</h3>
+<div class="spacer30"></div>
+<div class="container" ng-show="isPosted">
   <div class="row">
     <div class="col-md-12">
-      <pre>{{ response | json }}</pre>
+      <div ng-show="success"><p class="text-success">Your establishment has been added to the list. Thank you!</p></div>
+      <div ng-show="!success"><p class="text-error">Sorry, an error occured while adding your establishment. Please try again.</p><br /></div>
+      HTTP response:
+    <pre>{{ response | json }}</pre>
     </div>
   </div>
 </div>
