@@ -10,9 +10,13 @@ var app = angular.module('horeca', ['ngRoute', 'ngSanitize'])
         templateUrl: 'public/views/import.html',
         controller: 'ImportController'
       }).
-      when('/phones/:phoneId', { // Kept as example for passing parameters
-        templateUrl: 'partials/phone-detail.html',
-        controller: 'PhoneDetailCtrl'
+      when('/explore', {
+        templateUrl: 'public/views/explore.html',
+        controller: 'ExploreController'
+      }).
+      when('/explore/:estId', {
+        templateUrl: 'public/views/explore-detail.html',
+        controller: 'ExploreDetailController'
       }).
       otherwise({
         redirectTo: '/home'
