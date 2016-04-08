@@ -55,7 +55,24 @@ switch ($method) {
 
     break;
   case 'DELETE':
-    //$sql = "delete `$table` where id=$key";
+    // Check privileges
+    $auth = new Auth();
+    if($auth->getPrivileges() == 'Admin') {
+      $result = "Ok";
+      try {
+        $sql = "DELETE FROM `$table` WHERE id=$key";
+        $prep = $pdo->prepare($sql);
+        $prep->execute();
+        $result = $prep->errorInfo();
+      }
+      catch (Exception $e) {
+        echo $result = $e->getMessage();
+      }
+    }
+    else {
+      $result = "Rejected";
+    }
+    echo json_encode($result);
     break;
 }
 

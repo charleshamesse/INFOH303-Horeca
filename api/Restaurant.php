@@ -22,7 +22,8 @@ switch ($method) {
   case 'POST':
     //$sql = "insert into `$table` set $set"; break;
   case 'DELETE':
-    //$sql = "delete `$table` where id=$key"; break;
+    //$sql = "delete `$table` where id=$key";
+    break;
 }
 
 // Execute query

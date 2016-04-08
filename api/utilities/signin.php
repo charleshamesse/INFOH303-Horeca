@@ -5,7 +5,7 @@ include('header.php');
 // Get user from username
 $input = json_decode(file_get_contents('php://input'),true);
 try {
-  $sql = "SELECT Password FROM User WHERE Name='".$input['Name']."'";
+  $sql = "SELECT Password, Privileges FROM User WHERE Name='".$input['Name']."'";
   $prep = $pdo->prepare($sql);
 
   $prep->execute();
@@ -21,6 +21,11 @@ try {
     try {
       if ( hash_equals($pw, $recrypt) ) {
         $resp = "Success";
+        session_start();
+        $_SESSION['User'] = array(
+          "Name" => $input['Name'],
+          "Privileges" => $result['Privileges']
+        );
       }
       else {
         $resp = "Incorrect password";
