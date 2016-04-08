@@ -5,6 +5,7 @@
   <title>Horeca in Brussels</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
   <!-- CSS -->
   <link rel="stylesheet" href="assets/css/bootstrap.min.css" media="screen">
   <link rel="stylesheet" href="assets/css/custom.css" media="screen">
@@ -14,6 +15,8 @@
   <script src="assets/js/angular.min.js"></script>
   <script src="assets/js/angular-sanitize.js"></script>
   <script src="assets/js/angular-route.js"></script>
+
+  <!-- App -->
   <script src="public/index.js"></script>
   <script src="public/controllers/home.js"></script>
   <script src="public/controllers/explore.js"></script>
@@ -21,6 +24,8 @@
   <script src="public/controllers/users.js"></script>
   <script src="public/controllers/users-detail.js"></script>
   <script src="public/controllers/import.js"></script>
+  <script src="public/controllers/signup.js"></script>
+  <script src="public/controllers/signin.js"></script>
 
 </head>
 <body>
@@ -35,16 +40,24 @@
         </button>
       </div>
       <div class="navbar-collapse collapse" id="navbar-main">
-
+        <form class="navbar-form navbar-left" role="search">
+        <div class="form-group"><div class="input-group">
+      <input type="text" class="form-control" placeholder="Search for...">
+      <span class="input-group-btn">
+        <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
+      </span>
+    </div>
+        </div>
+      </form>
         <ul class="nav navbar-nav navbar-right">
+            <li>
+              <a href="#explore">Explore</a>
+            </li>
+            <li>
+              <a href="#users">Users</a>
+            </li>
           <li>
-            <a href="#explore">Explore</a>
-          </li>
-          <li>
-            <a href="#users">Users</a>
-          </li>
-          <li>
-            <a href="#search">Search</a>
+            <a href="#signup">Sign Up</a>
           </li>
         </ul>
 

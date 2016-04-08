@@ -1,0 +1,61 @@
+<div class="container">
+  <div class="page-header" id="banner">
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12"><br />
+        <h1>Sign Up for .brussels</h1>
+        <p class="lead">Connect with great local businesses</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col-md-4"></div>
+    <div class="col-md-4">
+      Development? <a href="" ng-click="randomUser(); randomized = true;">Randomize!</a> <span ng-show="randomized"> Password: {{ user.Password }}</span>
+      <div class="spacer10"></div>
+      <div class="well well-lg">
+        <form class="form-horizontal">
+          <fieldset>
+            <div class="form-group">
+              <div class="col-lg-12">
+                <input type="text" required ng-model="user.Name" class="form-control" id="inputName" placeholder="Name">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-lg-12">
+                <input type="email" required ng-model="user.MailAddress" class="form-control" id="inputEmail" placeholder="Email">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-lg-12">
+                <input type="password" required  ng-model="user.Password" class="form-control" id="inputPassword" placeholder="Password">
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-sm-12" align="center">
+                <button type="submit" ng-click="submit();" class="btn btn-primary">Sign up</button>
+              </div>
+            </div>
+          </fieldset>
+        </form>
+      </div>
+      <div align="right">
+        Already have an account? <a href="#signin">Sign in</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="container" ng-show="sent">
+  <div class="row">
+    <div class="col-md-12">
+      <p ng-show="success" class="text-success">Thank you. You can now <a href="#signin">log in</a>.</p>
+      <p> To display the API response, <a href="" ng-click="displayResponse = true;">click here</a></p>
+      <div ng-show="displayResponse">
+        <pre>{{ APIresponse | json }}</pre>
+      </div>
+  </div>
+  </div>
+</div>

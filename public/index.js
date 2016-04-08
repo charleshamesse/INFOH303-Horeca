@@ -26,6 +26,14 @@ var app = angular.module('horeca', ['ngRoute', 'ngSanitize'])
         templateUrl: 'public/views/users-detail.html',
         controller: 'UsersDetailController'
       }).
+      when('/signup', {
+        templateUrl: 'public/views/signup.html',
+        controller: 'SignUpController'
+      }).
+      when('/signin', {
+        templateUrl: 'public/views/signin.html',
+        controller: 'SignInController'
+      }).
       otherwise({
         redirectTo: '/home'
       });

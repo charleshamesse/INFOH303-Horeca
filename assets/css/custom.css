@@ -11,3 +11,10 @@
 .spacer10 {
   height: 10px;
 }
+
+.h.nav.search {
+  border: none;
+  line-height: inherit;
+  height: inherit;
+  vertical-align: middle;
+}
