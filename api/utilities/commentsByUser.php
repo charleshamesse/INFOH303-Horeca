@@ -13,9 +13,23 @@ $uid = $request[0];
 switch ($method) {
   case 'GET':
     try {
-      $sql = "SELECT *
+      $sql = "(SELECT C.Text as Text, C.Score as Score, C.Date as Date,
+              R.Name as Ename, R.id as Eid, 'Restaurant' as Etype, 0 as Etypeid
               FROM `Comment` C
-              WHERE C.Uid=".$uid."";
+              LEFT JOIN `Restaurant` R ON C.Eid=R.id
+              WHERE C.Etype=0 AND C.Uid=".$uid.")
+              UNION
+              (SELECT C.Text as Text, C.Score as Score, C.Date as Date,
+              B.Name as Ename, B.id as Eid, 'Bar' as Etype, 1 as Etypeid
+              FROM `Comment` C
+              LEFT JOIN `Bar` B ON C.Eid=B.id
+              WHERE C.Etype=1 AND C.Uid=".$uid.")
+              UNION
+              (SELECT C.Text as Text, C.Score as Score, C.Date as Date,
+              H.Name as Ename, H.id as Eid, 'Hotel' as Etype, 2 as Etypeid
+              FROM `Comment` C
+              LEFT JOIN `Hotel` H ON C.Eid=H.id
+              WHERE C.Etype=1 AND C.Uid=".$uid.")";
       $prep = $pdo->prepare($sql);
       $prep->execute();
     }

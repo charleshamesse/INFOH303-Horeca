@@ -33,3 +33,29 @@ i.h.score {
 .h.it {
   font-style: italic;
 }
+.h.no-margin {
+  margin:0;
+}
+li.h.tag {
+  margin-right:5px;
+}
+li.h.tag a {
+  margin-bottom: 5px;
+}
+li.h.tag span, li.h.tag span:hover {
+  background: none;
+  font: inherit;
+  margin: 0;
+  padding: 0;
+  top: 0;
+  text-transform: none;
+  border: none;
+}
+.h.tags {
+  text-align: left;
+  vertical-align: middle;
+}
+.h.input-tag {
+  width: 100px;
+  display: inline-block;
+}

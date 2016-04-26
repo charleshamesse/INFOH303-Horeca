@@ -6,17 +6,30 @@
         <p class="lead">Joined on {{ u.CreationDate | date:'medium' }}, <a href="mailto:{{ u.MailAddress }}">{{ u.MailAddress }}</a></p>
       </div>
     </div>
-    <div class="row">
-      <div class="col-lg-12 col-md-12 col-sm-12">
-        <h2>Places I commented</h2>
-        <div class="row" ng-repeat="c in u.comments">
-          <div class="col-lg-12">
-          <p class="lead">{{ c.Text }}</p>
-          </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-6 col-md-12 col-sm-12">
+      <h2>Places I commented</h2>
+      <div class="row" ng-repeat="c in u.comments">
+        <div class="col-lg-12">
+        <span class="lead">"{{ c.Text }}", {{ c.Score }}/5</span><br />
+        <i>About <a href="#explore/{{c.Etypeid}}/{{ c.Eid }}">{{c.Ename}}</a> in {{ c.Etype }}s on {{ c.Date }}.</i>
+        <div class="spacer10"></div>
         </div>
-        {{ u | json }}
       </div>
     </div>
+
+      <div class="col-lg-6 col-md-12 col-sm-12">
+        <h2>Places I tagged</h2>
+        <div class="row" ng-repeat="t in u.tags">
+          <div class="col-lg-12">
+            <ul class="pager h no-margin tags">
+    <li class="h tag"><a href="#">{{ t.Name }}</a> on <span><a href="#explore/{{t.Etype}}/{{ t.Eid }}">{{ t.Ename }}</a></span></li>
+  </ul>
+          </div>
+        </div>
+      </div>
   </div>
 </div>
 

@@ -11,6 +11,7 @@ angular.module('horeca')
     $scope.u = angular.fromJson(response).data[0];
     $scope.success = true;
     getUserComments($scope.u.id);
+    getUserTags($scope.u.id);
   }, function errorCallback(response) {
     $scope.response = "Error: " + response;
   });
@@ -21,10 +22,23 @@ angular.module('horeca')
       method: 'GET',
       url: 'api/utilities/commentsByUser.php/' + uid
     }).then(function successCallback(response) {
-      $scope.u.comments = angular.fromJson(response).data[0];
+      $scope.u.comments = angular.fromJson(response).data;
       $scope.success = true;
     }, function errorCallback(response) {
       $scope.response += "Comments error: " + response;
+    });
+  }
+
+  // Get tags
+  function getUserTags(uid) {
+    $http({
+      method: 'GET',
+      url: 'api/utilities/tagsByUser.php/' + uid
+    }).then(function successCallback(response) {
+      $scope.u.tags = angular.fromJson(response).data;
+      $scope.success = true;
+    }, function errorCallback(response) {
+      $scope.response += "Tags error: " + response;
     });
   }
 

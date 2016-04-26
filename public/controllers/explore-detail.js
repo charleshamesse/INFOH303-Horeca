@@ -10,7 +10,20 @@ angular.module('horeca')
     $scope.est = angular.fromJson(response).data[0];
     $scope.success = true;
 
-    // Fetch  half days off if it is a restaurant
+    // Fetch tags
+    $http({
+      method: 'GET',
+      url: 'api/utilities/tagsByEstablishment.php/' + $routeParams.estType + '/' + $routeParams.estId
+    }).then(function successCallback(response) {
+      $scope.est.Tags = angular.fromJson(response).data;
+      $scope.success = true;
+    }, function errorCallback(response) {
+      $scope.response += "Tags error: " + response;
+      $scope.success = false;
+    });
+
+
+    // Fetch half days off if it is a restaurant
     if($scope.est.Type == 0) {
       $http({
         method: 'GET',
@@ -33,12 +46,24 @@ angular.module('horeca')
     method: 'GET',
     url: 'api/utilities/commentsByEstablishment.php/' + $routeParams.estType + '/' + $routeParams.estId
   }).then(function successCallback(response) {
-    console.log(angular.fromJson(response).data);
     $scope.reviews = angular.fromJson(response).data['comments'];
     $scope.est.Rating = angular.fromJson(response).data['rating']['AvgScore'];
   }, function errorCallback(response) {
     $scope.reviewsResponse = "Error: " + response;
   });
+
+  // Get tags
+  var getTags = function() {
+  $http({
+    method: 'GET',
+    url: 'api/Tag.php'
+  }).then(function successCallback(response) {
+    $scope.tags = angular.fromJson(response).data;
+  }, function errorCallback(response) {
+    $scope.response += "Tags error: " + response;
+  });
+};
+getTags();
 
   // Write comments
   $scope.displayCommentForm = false;
@@ -75,5 +100,29 @@ angular.module('horeca')
       $scope.sent = true;
     });
   };
+
+  // Add tags
+  $scope.addTag = function() {
+    console.log($scope.newTag);
+    $http({
+      method: 'POST',
+      url: 'api/Tag.php',
+      data: {
+        "Uid": $scope.Main.user.id,
+        "Eid": $scope.est.id,
+        "Etype": $scope.est.Type,
+        "Tag": $scope.newTag,
+        }
+      }).then(function successCallback(response) {
+        $scope.APIresponse = angular.fromJson(response);
+        console.log($scope.APIresponse);
+        $scope.success = true;
+        $scope.sent = true;
+        getTags();
+      }, function errorCallback(response) {
+        $scope.APIresponse = "Error: " + response;
+        $scope.sent = true;
+      });
+  }
 
 });

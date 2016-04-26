@@ -5,10 +5,10 @@
         <h1>{{ est.Name }}</h1>
         <p class="lead">{{ est.Address_Street }}, {{ est.Address_Num }} - {{ est.Address_Zip }} {{ est.Address_City }}</p>
       </div>
-        <div class="col-lg-4 col-md-4 col-sm-12" align="right" ng-init="scores = [1,2,3,4,5];"><br />
-          <h2><span ng-repeat="s in scores"><i class="fa fa-star" ng-class="{'fa-star-o': (est.Rating < s)}"></i> </span></i></h2>
-          <p class="text-muted">Based on {{ reviews.length }} user reviews</p>
-        </div>
+      <div class="col-lg-4 col-md-4 col-sm-12" align="right" ng-init="scores = [1,2,3,4,5];"><br />
+        <h2><span ng-repeat="s in scores"><i class="fa fa-star" ng-class="{'fa-star-o': (est.Rating < s)}"></i> </span></i></h2>
+        <p class="text-muted">Based on {{ reviews.length }} user reviews</p>
+      </div>
     </div>
   </div>
   <div class="row">
@@ -18,71 +18,80 @@
       </ng-map>
     </div>
   </div>
-  <div class="row">
-    <div class="col-lg-12">
-      <ul class="pager">
-  <li><a href="">Previous</a></li>
-  <li><a href="">Next</a></li>
-</ul>
-    </div>
-  </div>
 
   <div class="row">
-    <div class="col-lg-6 col-md-6 col-sm-12">
+    <!-- Tags -->
+    <div class="col-lg-4 col-md-6">
+      <h2>Tags</h2>
+      <ul class="pager h tags">
+        <li ng-repeat="t in est.Tags" class="h tag"><a href="">{{ t.Name }} ({{t.Occurences}})</a></li>&nbsp;
+      </ul>
+
+      <input ng-show="Main.user.Privileges != 'None'" list="tags" ng-model="newTag" ng-keyup="$event.keyCode == 13 && addTag();"class="form-control" placeholder="Tag this place and press enter.." type="text" id="choix_bieres">
+      <datalist id="tags">
+        <option ng-repeat="t in tags" value="{{t.Name}}">
+      </datalist>
+    </div>
+
+    <!-- Additional information -->
+    <div class="col-lg-4 col-md-6 col-sm-12">
       <h2>Additional information</h2>
       <!-- Restaurant -->
       <div ng-if="est.Type == 0">
-      <table class="h additional-info">
-        <tr>
-          <td>Price range:</td>
-          <td>{{ est.PriceRange_LowerBound }} to {{ est.PriceRange_UpperBound }} EUR</td>
-        </tr>
-        <tr>
-          <td>Capacity:</td>
-          <td>{{ est.Capacity }} seats</td>
-        </tr>
-        <tr>
-          <td>Does take away:</td>
-          <td><span ng-if="est.TakeAway">Yes</span><span ng-if="!est.TakeAway">No</span></td>
-        </tr>
-        <tr>
-          <td>Does delivery:</td>
-          <td><span ng-if="est.Delivery">Yes</span><span ng-if="!est.Delivery">No</span></td>
-        </tr>
-      </table>
+        <table class="h additional-info">
+          <tr>
+            <td>Price range:</td>
+            <td>{{ est.PriceRange_LowerBound }} to {{ est.PriceRange_UpperBound }} EUR</td>
+          </tr>
+          <tr>
+            <td>Capacity:</td>
+            <td>{{ est.Capacity }} seats</td>
+          </tr>
+          <tr>
+            <td>Does take away:</td>
+            <td><span ng-if="est.TakeAway">Yes</span><span ng-if="!est.TakeAway">No</span></td>
+          </tr>
+          <tr>
+            <td>Does delivery:</td>
+            <td><span ng-if="est.Delivery">Yes</span><span ng-if="!est.Delivery">No</span></td>
+          </tr>
+        </table>
+      </div>
+      <!-- Hotel -->
+      <div ng-if="est.Type == 1">
+        <table class="h additional-info">
+          <tr>
+            <td>Stars:</td>
+            <td>{{ est.Stars }}</td>
+          </tr>
+          <tr>
+            <td>Rooms:</td>
+            <td>{{ est.Rooms }}</td>
+          </tr>
+          <tr>
+            <td>Example price:</td>
+            <td>{{ est.ExamplePrice }} EUR</td>
+          </tr>
+        </table>
+      </div>
+      <!-- Bar -->
+      <div ng-if="est.Type == 2">
+        <table class="h additional-info">
+          <tr>
+            <td>Allows smoking:</td>
+            <td><span ng-if="est.Smoking">Yes</span><span ng-if="!est.Smoking">No</span></td>
+          </tr>
+          <tr>
+            <td>Provides snack:</td>
+            <td><span ng-if="est.Snack">Yes</span><span ng-if="!est.Snack">No</span></td>
+          </tr>
+        </table>
+      </div>
     </div>
-    <!-- Hotel -->
-    <div ng-if="est.Type == 1">
-    <table class="h additional-info">
-      <tr>
-        <td>Stars:</td>
-        <td>{{ est.Stars }}</td>
-      </tr>
-      <tr>
-        <td>Rooms:</td>
-        <td>{{ est.Rooms }}</td>
-      </tr>
-      <tr>
-        <td>Example price:</td>
-        <td>{{ est.ExamplePrice }} EUR</td>
-      </tr>
-    </table>
-  </div>
-  <!-- Bar -->
-  <div ng-if="est.Type == 2">
-  <table class="h additional-info">
-    <tr>
-      <td>Allows smoking:</td>
-      <td><span ng-if="est.Smoking">Yes</span><span ng-if="!est.Smoking">No</span></td>
-    </tr>
-    <tr>
-      <td>Provides snack:</td>
-      <td><span ng-if="est.Snack">Yes</span><span ng-if="!est.Snack">No</span></td>
-    </tr>
-  </table>
-</div>
-    </div>
-    <div class="col-lg-6 col-md-6 col-sm-12">
+
+
+    <!-- Contact -->
+    <div class="col-lg-4 col-md-12 col-sm-12">
       <h2>Contact</h2>
       <table class="h additional-info">
         <tr>
@@ -109,7 +118,7 @@
 
     </div>
     <div class="col-lg-6 col-md-6 col-sm-12" align="right">
-        <h2><button class="btn btn-primary" ng-click="writeReview();">Write a review</button></h2>
+      <h2><button class="btn btn-primary" ng-click="writeReview();">Write a review</button></h2>
     </div>
   </div>
   <div class="row" ng-if="displayReviewForm">
@@ -138,27 +147,27 @@
         </fieldset>
       </form>
     </div>
-      <div class="col-lg-12 col-md-12 col-sm-12" ng-if="Main.user.Privileges == 'None'">
-        You must <a href="#signup">create an account</a> to post a review. Already member of .brussels? &nbsp;&nbsp;<a href="#signin"><button class="btn btn-default">Sign in</button></a>
-      </div>
+    <div class="col-lg-12 col-md-12 col-sm-12" ng-if="Main.user.Privileges == 'None'">
+      You must <a href="#signup">create an account</a> to post a review. Already member of .brussels? &nbsp;&nbsp;<a href="#signin"><button class="btn btn-default">Sign in</button></a>
+    </div>
   </div>
   <div class="row" ng-repeat="r in reviews">
-      <div class="col-sm-6">
-        <strong>{{ r.Name }}</strong> (<a href="mailto:{{ r.MailAddress }}">{{ r.MailAddress }}</a>) on {{ r.Date | date:'medium' }}
-      </div>
-      <div class="col-sm-6" align="right" ng-init="scores = [1,2,3,4,5];">
-        <span ng-repeat="s in scores"><i class="fa fa-star" ng-class="{'fa-star-o': (r.Score < s)}"></i> </span>
-      </div>
-      <div class="col-lg-12">
-        <div class="spacer10"></div>
-        <p class="lead">"{{ r.Text }}"</p>
-        <div class="spacer30"></div>
-      </div>
+    <div class="col-md-6 col-sm-12">
+      By <strong>{{ r.Name }}</strong> (<a href="mailto:{{ r.MailAddress }}">{{ r.MailAddress }}</a>) on {{ r.Date | date:'medium' }}:
+    </div>
+    <div class="col-md-6 col-sm-12" align="right" ng-init="scores = [1,2,3,4,5];">
+      <span ng-repeat="s in scores"><i class="fa fa-star" ng-class="{'fa-star-o': (r.Score < s)}"></i> </span>
+    </div>
+    <div class="col-lg-12">
+      <div class="spacer10"></div>
+      <p class="lead">"{{ r.Text }}"</p>
+      <div class="spacer30"></div>
+    </div>
   </div>
 
   <div ng-if="sent">
-Review sent. Success {{ success }}.
-<pre>{{ APIresponse | json }}</pre>
+    Review sent. Success {{ success }}.
+    <pre>{{ APIresponse | json }}</pre>
 
   </div>
 
@@ -166,9 +175,9 @@ Review sent. Success {{ success }}.
   <div class="row" ng-if="Main.adminMode">
     <div class="col-lg-12 col-md-12 col-sm-12">
       <h2>Admin panel</h2>
-        <button ng-click="edit();" class="btn btn-default">Edit establishment</button>
-        <button ng-click="delete();" class="btn btn-danger">Delete establishment</button>
-        {{ response }}
+      <button ng-click="edit();" class="btn btn-default">Edit establishment</button>
+      <button ng-click="delete();" class="btn btn-danger">Delete establishment</button>
+      {{ response }}
     </div>
   </div>
 </div>
