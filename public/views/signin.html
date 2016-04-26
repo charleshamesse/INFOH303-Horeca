@@ -44,7 +44,8 @@
 <div class="container" ng-show="sent">
   <div class="row">
     <div class="col-md-12">
-      <p ng-show="success" class="text-success">Thank you. You can now <a href="#signin">log in</a>.</p>
+      <p ng-show="success && sent" class="text-success">Thank you. You can now <a href="#explore">explore local businesses</a>.</p>
+      <p ng-show="!success && sent" class="text-danger">Incorrect password.</p>
       <p> To display the API response, <a href="" ng-click="displayResponse = true;">click here</a></p>
       <div ng-show="displayResponse">
         <pre>{{ APIresponse | json }}</pre>

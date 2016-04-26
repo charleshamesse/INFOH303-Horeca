@@ -18,3 +18,18 @@
   height: inherit;
   vertical-align: middle;
 }
+
+.h.additional-info tr td:first-child {
+  padding-right: 20px;
+  font-weight: bold;
+}
+.h.additional-info tr td {
+  padding-bottom: 5px;
+}
+i.h.score {
+  cursor: pointer;
+}
+
+.h.it {
+  font-style: italic;
+}

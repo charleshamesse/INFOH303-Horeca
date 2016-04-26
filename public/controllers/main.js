@@ -5,15 +5,18 @@ angular.module('horeca')
     "Privileges": "None"
   };
 
-  $http({
-    method: 'GET',
-    url: 'api/utilities/privileges.php'
-  }).then(function successCallback(response) {
-    $scope.Main.user = angular.fromJson(response).data;
-    console.log($scope.Main.user);
-  }, function errorCallback(response) {
-    $scope.Main.response = "Error: " + response;
-  });
+  $scope.Main.refreshLogin = function() {
+
+    $http({
+      method: 'GET',
+      url: 'api/utilities/privileges.php'
+    }).then(function successCallback(response) {
+      $scope.Main.user = angular.fromJson(response).data;
+      $scope.Main.adminMode = ($scope.Main.user.Privileges == 'Admin');
+    }, function errorCallback(response) {
+      $scope.Main.response = "Error: " + response;
+    });
+  };
 
   $scope.Main.logout = function() {
     $http({
@@ -26,9 +29,12 @@ angular.module('horeca')
       $scope.Main.user = {
         "Privileges": "None"
       };
+      $scope.Main.adminMode = ($scope.Main.user.Privileges == 'Admin');
     }, function errorCallback(response) {
       $scope.Main.response = "Error: " + response;
     });
   };
+
+  $scope.Main.refreshLogin();
 
 });

@@ -13,12 +13,23 @@ angular.module('horeca')
       data: $scope.user
     }).then(function successCallback(response) {
       $scope.APIresponse = angular.fromJson(response);
-      $scope.success = true;
+      console.log($scope.APIresponse.data);
+      if($scope.APIresponse.data == "\"Success\"") {
+        $scope.success = true;
+        $scope.Main.refreshLogin();
+      }
+      else if($scope.APIresponse.data == "\"Incorrect password\"") {
+        $scope.success = false;
+      }
+      else {
+        $scope.success = false;
+      }
+        $scope.sent = true;
     }, function errorCallback(response) {
       $scope.APIresponse = "Error: " + response;
+        $scope.sent = true;
     });
-      $scope.sent = true;
-  }
+  };
 
 
 });

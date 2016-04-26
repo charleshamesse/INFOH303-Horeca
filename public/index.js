@@ -1,4 +1,4 @@
-var app = angular.module('horeca', ['ngRoute', 'ngSanitize'])
+var app = angular.module('horeca', ['ngRoute', 'ngSanitize', 'ngMap'])
 .config(['$routeProvider',
   function($routeProvider) {
     $routeProvider.
@@ -14,7 +14,7 @@ var app = angular.module('horeca', ['ngRoute', 'ngSanitize'])
         templateUrl: 'public/views/explore.html',
         controller: 'ExploreController'
       }).
-      when('/explore/:estId', {
+      when('/explore/:estType/:estId', {
         templateUrl: 'public/views/explore-detail.html',
         controller: 'ExploreDetailController'
       }).

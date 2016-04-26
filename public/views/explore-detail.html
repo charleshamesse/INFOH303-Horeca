@@ -1,19 +1,174 @@
 <div class="container">
   <div class="page-header" id="banner">
     <div class="row">
-      <div class="col-lg-12 col-md-12 col-sm-12"><br />
-        {{ test }}
+      <div class="col-lg-8 col-md-8 col-sm-12"><br />
         <h1>{{ est.Name }}</h1>
-        <p class="lead">{{ est.Address_Street }}, {{ est.Address_Num }}</p>
+        <p class="lead">{{ est.Address_Street }}, {{ est.Address_Num }} - {{ est.Address_Zip }} {{ est.Address_City }}</p>
       </div>
+        <div class="col-lg-4 col-md-4 col-sm-12" align="right" ng-init="scores = [1,2,3,4,5];"><br />
+          <h2><span ng-repeat="s in scores"><i class="fa fa-star" ng-class="{'fa-star-o': (est.Rating < s)}"></i> </span></i></h2>
+          <p class="text-muted">Based on {{ reviews.length }} user reviews</p>
+        </div>
     </div>
   </div>
-</div>
-
-<div class="container">
-    <div class="row">
-      <div class="col-lg-12 col-md-12 col-sm-12"><br />
-        <pre>{{ est | json}}</pre>
-      </div>
+  <div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12">
+      <ng-map style="height:400px" zoom="16" center="[{{ est.Address_Latitude }}, {{ est.Address_Longitude }}]">
+        <marker position="[{{ est.Address_Latitude }}, {{ est.Address_Longitude }}]" title="marker" animation="Animation.DROP"></marker>
+      </ng-map>
     </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <ul class="pager">
+  <li><a href="">Previous</a></li>
+  <li><a href="">Next</a></li>
+</ul>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-12">
+      <h2>Additional information</h2>
+      <!-- Restaurant -->
+      <div ng-if="est.Type == 0">
+      <table class="h additional-info">
+        <tr>
+          <td>Price range:</td>
+          <td>{{ est.PriceRange_LowerBound }} to {{ est.PriceRange_UpperBound }} EUR</td>
+        </tr>
+        <tr>
+          <td>Capacity:</td>
+          <td>{{ est.Capacity }} seats</td>
+        </tr>
+        <tr>
+          <td>Does take away:</td>
+          <td><span ng-if="est.TakeAway">Yes</span><span ng-if="!est.TakeAway">No</span></td>
+        </tr>
+        <tr>
+          <td>Does delivery:</td>
+          <td><span ng-if="est.Delivery">Yes</span><span ng-if="!est.Delivery">No</span></td>
+        </tr>
+      </table>
+    </div>
+    <!-- Hotel -->
+    <div ng-if="est.Type == 1">
+    <table class="h additional-info">
+      <tr>
+        <td>Stars:</td>
+        <td>{{ est.Stars }}</td>
+      </tr>
+      <tr>
+        <td>Rooms:</td>
+        <td>{{ est.Rooms }}</td>
+      </tr>
+      <tr>
+        <td>Example price:</td>
+        <td>{{ est.ExamplePrice }} EUR</td>
+      </tr>
+    </table>
+  </div>
+  <!-- Bar -->
+  <div ng-if="est.Type == 2">
+  <table class="h additional-info">
+    <tr>
+      <td>Allows smoking:</td>
+      <td><span ng-if="est.Smoking">Yes</span><span ng-if="!est.Smoking">No</span></td>
+    </tr>
+    <tr>
+      <td>Provides snack:</td>
+      <td><span ng-if="est.Snack">Yes</span><span ng-if="!est.Snack">No</span></td>
+    </tr>
+  </table>
+</div>
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-12">
+      <h2>Contact</h2>
+      <table class="h additional-info">
+        <tr>
+          <td>Site:</td>
+          <td><a href="{{ est.Site }}">{{ est.Site }}</a></td>
+        </tr>
+        <tr>
+          <td>Phone:</td>
+          <td>{{ est.Tel }}</td>
+        </tr>
+        <tr ng-if="est.Type == 0">
+          <td>Closes on:</td>
+          <td ng-init="days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']; periods = ['morning', 'afternoon'];"><span ng-repeat="hd in est.HalfDaysOff">{{ days[hd.Day] }}  {{ periods[hd.Period]}}<span ng-if="$index != est.HalfDaysOff.length-1">, </span></span>.</td>
+        </tr>
+      </table>
+      Created by <a href="#users/{{est.CreatorId}}">{{ est.Creator }}</a> on {{ est.CreationDate }}.
+
+    </div>
+  </div>
+  <!-- Comments -->
+  <div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-12">
+      <h2>User reviews</h2>
+
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-12" align="right">
+        <h2><button class="btn btn-primary" ng-click="writeReview();">Write a review</button></h2>
+    </div>
+  </div>
+  <div class="row" ng-if="displayReviewForm">
+    <div class="col-lg-12 col-md-12 col-sm-12" ng-if="Main.user.Privileges != 'None'">
+      <form class="form-horizontal">
+        <p class="lead">Express your thoughts on {{ est.Name }}</p>
+        <fieldset>
+          <div class="form-group">
+            <div class="col-sm-6">
+              Logged in as <i>{{ Main.user.Name }}</i>. Not you? <a href="" ng-click="Main.logout();">Log out</a>
+            </div>
+            <div class="col-sm-6" align="right" ng-init="scores = [1,2,3,4,5];">
+              Give {{ est.Name }} a score: &nbsp;&nbsp;<span ng-repeat="s in scores"><i class="fa fa-star h score" ng-class="{'fa-star-o': (review.Score < s)}"  ng-click="updateScore(s);"></i> </span>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-lg-12">
+              <textarea required  ng-model="review.Text" class="form-control" rows="4" id="inputText" placeholder="Enter your opinion here.."></textarea>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-lg-12" align="center">
+              <button ng-click="sendReview();" class="btn btn-primary">Submit review</button>
+            </div>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+      <div class="col-lg-12 col-md-12 col-sm-12" ng-if="Main.user.Privileges == 'None'">
+        You must <a href="#signup">create an account</a> to post a review. Already member of .brussels? &nbsp;&nbsp;<a href="#signin"><button class="btn btn-default">Sign in</button></a>
+      </div>
+  </div>
+  <div class="row" ng-repeat="r in reviews">
+      <div class="col-sm-6">
+        <strong>{{ r.Name }}</strong> (<a href="mailto:{{ r.MailAddress }}">{{ r.MailAddress }}</a>) on {{ r.Date | date:'medium' }}
+      </div>
+      <div class="col-sm-6" align="right" ng-init="scores = [1,2,3,4,5];">
+        <span ng-repeat="s in scores"><i class="fa fa-star" ng-class="{'fa-star-o': (r.Score < s)}"></i> </span>
+      </div>
+      <div class="col-lg-12">
+        <div class="spacer10"></div>
+        <p class="lead">"{{ r.Text }}"</p>
+        <div class="spacer30"></div>
+      </div>
+  </div>
+
+  <div ng-if="sent">
+Review sent. Success {{ success }}.
+<pre>{{ APIresponse | json }}</pre>
+
+  </div>
+
+  <!-- Admin -->
+  <div class="row" ng-if="Main.adminMode">
+    <div class="col-lg-12 col-md-12 col-sm-12">
+      <h2>Admin panel</h2>
+        <button ng-click="edit();" class="btn btn-default">Edit establishment</button>
+        <button ng-click="delete();" class="btn btn-danger">Delete establishment</button>
+        {{ response }}
+    </div>
+  </div>
 </div>

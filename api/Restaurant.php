@@ -15,7 +15,21 @@ $key = array_shift($request)+0;
 // create SQL based on HTTP method
 switch ($method) {
   case 'GET':
-    $sql = "select * from `$table`".($key?" WHERE id=$key":'');
+    $sql = "SELECT E.id as id, E.Name as Name,
+            E.Address_Street as Address_Street, E.Address_Num as Address_Num, E.Address_Zip as Address_Zip, E.Address_City as Address_City, E.Address_Longitude as Address_Longitude, E.Address_Latitude as Address_Latitude,
+            E.Site as Site,
+            E.Tel as Tel,
+            E.CreationDate as CreationDate,
+            E.PriceRange_LowerBound as PriceRange_LowerBound,
+            E.PriceRange_UpperBound as PriceRange_UpperBound,
+            E.Capacity as Capacity,
+            E.TakeAway as TakeAway,
+            E.Delivery as Delivery,
+            U.Name as Creator,
+            U.id as CreatorId
+            FROM `$table` E
+            LEFT JOIN `User` U ON E.CreatedBy=U.id
+            ".($key?" WHERE E.id=$key":'');
     break;
   case 'PUT':
     //$sql = "update `$table` set $set where id=$key"; break;

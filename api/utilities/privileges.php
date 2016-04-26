@@ -4,6 +4,7 @@ $auth = new Auth();
 $method = $_SERVER['REQUEST_METHOD'];
 if($method == "GET") {
   $user = array(
+    'id' => $auth->getUserId(),
     'Name' => $auth->getUserName(),
     'Privileges' => $auth->getPrivileges()
   );

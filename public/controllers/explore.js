@@ -5,7 +5,7 @@ angular.module('horeca')
   // Get list
   $http({
     method: 'GET',
-    url: 'api/Restaurant.php'
+    url: 'api/Establishment.php'
   }).then(function successCallback(response) {
     $scope.establishments = angular.fromJson(response).data;
     $scope.success = true;

@@ -2,16 +2,31 @@ angular.module('horeca')
 .controller('UsersDetailController', function($scope, $routeParams, $http) {
   $scope.u = {};
   $scope.response = "";
-  // Get list
+
+  // Get user
   $http({
     method: 'GET',
     url: 'api/User.php/' + $routeParams.estId
   }).then(function successCallback(response) {
     $scope.u = angular.fromJson(response).data[0];
     $scope.success = true;
+    getUserComments($scope.u.id);
   }, function errorCallback(response) {
     $scope.response = "Error: " + response;
   });
+
+  // Get comments
+  function getUserComments(uid) {
+    $http({
+      method: 'GET',
+      url: 'api/utilities/commentsByUser.php/' + uid
+    }).then(function successCallback(response) {
+      $scope.u.comments = angular.fromJson(response).data[0];
+      $scope.success = true;
+    }, function errorCallback(response) {
+      $scope.response += "Comments error: " + response;
+    });
+  }
 
 
   // Delete user

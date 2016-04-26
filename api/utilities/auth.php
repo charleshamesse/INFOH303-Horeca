@@ -29,6 +29,15 @@ class Auth {
     return ($level >= 1);
   }
 
+  function getUserId() {
+    $level = $this->getAuthLevel();
+    if($level >= 1) {
+      return $_SESSION['User']['id'];
+    }
+    else {
+      return "";
+    }
+  }
 
   function getUserName() {
     $level = $this->getAuthLevel();
