@@ -30,6 +30,7 @@
   <script src="public/controllers/import.js"></script>
   <script src="public/controllers/signup.js"></script>
   <script src="public/controllers/signin.js"></script>
+  <script src="public/controllers/search.js"></script>
 
 </head>
 <body ng-controller="MainController">
@@ -46,9 +47,9 @@
       <div class="navbar-collapse collapse" id="navbar-main">
         <form class="navbar-form navbar-left" role="search">
         <div class="form-group"><div class="input-group">
-      <input type="text" class="form-control" placeholder="Search for...">
+      <input type="text"  ng-model="Main.customSearch" class="form-control" placeholder="Search for...">
       <span class="input-group-btn">
-        <button class="btn btn-default" type="button"><i class="fa fa-search"></i></button>
+        <button class="btn btn-default" ng-click="customSearch();"><i class="fa fa-search"></i></button>
       </span>
     </div>
         </div>

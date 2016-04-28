@@ -1,5 +1,5 @@
 angular.module('horeca')
-.controller('MainController', function($scope, $routeParams, $http) {
+.controller('MainController', function($scope, $routeParams, $http, $location) {
   $scope.Main = {};
   $scope.Main.user = {
     "Privileges": "None"
@@ -36,5 +36,10 @@ angular.module('horeca')
   };
 
   $scope.Main.refreshLogin();
+
+  // Custom search
+  $scope.customSearch = function () {
+    $location.path("/search/" + $scope.Main.customSearch);
+  }
 
 });
