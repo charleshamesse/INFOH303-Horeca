@@ -1,6 +1,7 @@
 angular.module('horeca')
 .controller('ExploreDetailController', function($scope, $routeParams, $http) {
   $scope.est = {};
+  $scope.displayEditForm = false;
 
   // Get establishment
   $http({
@@ -122,6 +123,39 @@ getTags();
       }, function errorCallback(response) {
         $scope.APIresponse = "Error: " + response;
         $scope.sent = true;
+      });
+  };
+
+  // Delete
+  $scope.delete = function() {
+    $http({
+      method: 'DELETE',
+      url: 'api/Establishment.php/' + $scope.est.Type + '/' + $scope.est.id
+      }).then(function successCallback(response) {
+        $scope.APIresponse = angular.fromJson(response);
+        console.log($scope.APIresponse);
+      }, function errorCallback(response) {
+        $scope.APIresponse = "Error: " + response;
+      });
+  };
+
+  // Edit
+  $scope.edit = function() {
+    $scope.displayEditForm = true;
+    $scope.new = $scope.est;
+    $scope.new.Type = $routeParams.estType;
+  }
+  $scope.post = function() {
+    $scope.new.id = $routeParams.estId;
+    $http({
+      method: 'PUT',
+      url: 'api/Establishment.php',
+      data: {"e": $scope.new}
+      }).then(function successCallback(response) {
+        $scope.APIresponse = angular.fromJson(response);
+        console.log($scope.APIresponse);
+      }, function errorCallback(response) {
+        $scope.APIresponse = "Error: " + response;
       });
   }
 
