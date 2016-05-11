@@ -39,6 +39,7 @@ angular.module('horeca')
       $scope.success = true;
     }, function errorCallback(response) {
       $scope.response += "Tags error: " + response;
+      console.log($scope.response);
     });
   }
 

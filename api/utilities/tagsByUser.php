@@ -15,20 +15,20 @@ switch ($method) {
     try {
       $sql = "(SELECT T.Name as Name, E.Name as Ename, E.id as Eid, 0 as Etype
               FROM `AddsTag` A
-              LEFT JOIN `Tag` T ON A.Tid=T.id
-              LEFT JOIN `Restaurant` E ON A.Eid = E.id
+              RIGHT JOIN `Tag` T ON A.Tid=T.id
+              RIGHT JOIN `Restaurant` E ON A.Eid = E.id
               WHERE A.Uid=".$uid." AND A.Etype = 0)
               UNION
-              (SELECT T.Name as Name, E.Name as Ename, E.id as Eid, 0 as Etype
+              (SELECT T.Name as Name, E.Name as Ename, E.id as Eid, 1 as Etype
               FROM `AddsTag` A
-              LEFT JOIN `Tag` T ON A.Tid=T.id
-              LEFT JOIN `Bar` E ON A.Eid = E.id
+              RIGHT JOIN `Tag` T ON A.Tid=T.id
+              RIGHT JOIN `Bar` E ON A.Eid = E.id
               WHERE A.Uid=".$uid." AND A.Etype = 1)
               UNION
-              (SELECT T.Name as Name, E.Name as Ename, E.id as Eid, 0 as Etype
+              (SELECT T.Name as Name, E.Name as Ename, E.id as Eid, 2 as Etype
               FROM `AddsTag` A
-              LEFT JOIN `Tag` T ON A.Tid=T.id
-              LEFT JOIN `Hotel` E ON A.Eid = E.id
+              RIGHT JOIN `Tag` T ON A.Tid=T.id
+              RIGHT JOIN `Hotel` E ON A.Eid = E.id
               WHERE A.Uid=".$uid." AND A.Etype = 2)";
 
       $prep = $pdo->prepare($sql);
