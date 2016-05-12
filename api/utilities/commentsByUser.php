@@ -20,13 +20,13 @@ switch ($method) {
               WHERE C.Etype=0 AND C.Uid=".$uid.")
               UNION
               (SELECT C.Text as Text, C.Score as Score, C.Date as Date,
-              B.Name as Ename, B.id as Eid, 'Bar' as Etype, 1 as Etypeid
+              B.Name as Ename, B.id as Eid, 'Bar' as Etype, 2 as Etypeid
               FROM `Comment` C
               LEFT JOIN `Bar` B ON C.Eid=B.id
-              WHERE C.Etype=1 AND C.Uid=".$uid.")
+              WHERE C.Etype=2 AND C.Uid=".$uid.")
               UNION
               (SELECT C.Text as Text, C.Score as Score, C.Date as Date,
-              H.Name as Ename, H.id as Eid, 'Hotel' as Etype, 2 as Etypeid
+              H.Name as Ename, H.id as Eid, 'Hotel' as Etype, 1 as Etypeid
               FROM `Comment` C
               LEFT JOIN `Hotel` H ON C.Eid=H.id
               WHERE C.Etype=1 AND C.Uid=".$uid.")";

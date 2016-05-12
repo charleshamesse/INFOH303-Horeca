@@ -19,17 +19,17 @@ switch ($method) {
               RIGHT JOIN `Restaurant` E ON A.Eid = E.id
               WHERE A.Uid=".$uid." AND A.Etype = 0)
               UNION
-              (SELECT T.Name as Name, E.Name as Ename, E.id as Eid, 1 as Etype
-              FROM `AddsTag` A
-              RIGHT JOIN `Tag` T ON A.Tid=T.id
-              RIGHT JOIN `Bar` E ON A.Eid = E.id
-              WHERE A.Uid=".$uid." AND A.Etype = 1)
-              UNION
               (SELECT T.Name as Name, E.Name as Ename, E.id as Eid, 2 as Etype
               FROM `AddsTag` A
               RIGHT JOIN `Tag` T ON A.Tid=T.id
+              RIGHT JOIN `Bar` E ON A.Eid = E.id
+              WHERE A.Uid=".$uid." AND A.Etype = 2)
+              UNION
+              (SELECT T.Name as Name, E.Name as Ename, E.id as Eid, 1 as Etype
+              FROM `AddsTag` A
+              RIGHT JOIN `Tag` T ON A.Tid=T.id
               RIGHT JOIN `Hotel` E ON A.Eid = E.id
-              WHERE A.Uid=".$uid." AND A.Etype = 2)";
+              WHERE A.Uid=".$uid." AND A.Etype = 1)";
 
       $prep = $pdo->prepare($sql);
       $prep->execute();

@@ -1,0 +1,370 @@
+-- phpMyAdmin SQL Dump
+-- version 4.1.12
+-- http://www.phpmyadmin.net
+--
+-- Host: localhost:8889
+-- Generation Time: May 12, 2016 at 05:44 PM
+-- Server version: 5.5.34
+-- PHP Version: 5.5.10
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET time_zone = "+00:00";
+
+--
+-- Database: `infoh303`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `AddsTag`
+--
+
+CREATE TABLE `AddsTag` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `Tid` int(11) NOT NULL,
+  `Uid` int(11) NOT NULL,
+  `Etype` tinyint(4) NOT NULL,
+  `Eid` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=40 ;
+
+--
+-- Dumping data for table `AddsTag`
+--
+
+INSERT INTO `AddsTag` (`id`, `Tid`, `Uid`, `Etype`, `Eid`) VALUES
+(1, 1, 1, 0, 1),
+(2, 2, 1, 0, 1),
+(3, 1, 2, 0, 1),
+(6, 3, 1, 0, 2),
+(21, 4, 1, 0, 2),
+(22, 12, 1, 0, 2),
+(23, 5, 1, 2, 5),
+(25, 14, 1, 0, 1),
+(27, 3, 1, 0, 1),
+(28, 5, 1, 2, 4),
+(29, 6, 1, 1, 4),
+(30, 4, 1, 1, 4),
+(31, 15, 1, 1, 4),
+(32, 16, 1, 1, 4),
+(33, 17, 1, 1, 4),
+(34, 6, 1, 1, 5),
+(35, 18, 1, 0, 1),
+(36, 3, 1, 2, 6),
+(37, 19, 1, 2, 7),
+(38, 20, 1, 2, 7),
+(39, 10, 1, 0, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Bar`
+--
+
+CREATE TABLE `Bar` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `Name` varchar(255) NOT NULL,
+  `Address_Street` varchar(255) NOT NULL,
+  `Address_Num` int(11) NOT NULL,
+  `Address_Zip` int(11) NOT NULL,
+  `Address_City` varchar(255) NOT NULL,
+  `Address_Longitude` float NOT NULL,
+  `Address_Latitude` float NOT NULL,
+  `Site` varchar(255) NOT NULL,
+  `Tel` varchar(255) NOT NULL,
+  `CreationDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `CreatedBy` int(11) NOT NULL,
+  `Smoking` tinyint(1) NOT NULL,
+  `Snack` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+
+--
+-- Dumping data for table `Bar`
+--
+
+INSERT INTO `Bar` (`id`, `Name`, `Address_Street`, `Address_Num`, `Address_Zip`, `Address_City`, `Address_Longitude`, `Address_Latitude`, `Site`, `Tel`, `CreationDate`, `CreatedBy`, `Smoking`, `Snack`) VALUES
+(4, 'Bar du Matin', 'Rue Albert', 69, 1060, 'Brussels', 32.1235, 34.1235, 'www.bardumatin.be', '21/1245678', '2016-04-25 22:00:00', 1, 1, 0),
+(5, 'Brasserie du Marché', 'Place Flagey', 12, 1050, 'Brussels', 12.1235, 12.1235, 'www.brasseriedumarche.be', '12-93284923', '2016-04-21 22:00:00', 1, 1, 1),
+(6, 'Kafkaf', 'Avenue Paul Héger', 33, 1050, 'Brussels', 12.1235, 12.1234, 'www.kafkaf.be', '0472293301', '2016-04-27 13:06:16', 1, 1, 1),
+(7, 'La Jefke', 'Boulevard du Triomphe', 66, 1050, 'Brussels', 45.4555, 54.4444, 'www.lajekfe.be', '12345678', '2016-04-28 13:05:44', 1, 1, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ClosesOn`
+--
+
+CREATE TABLE `ClosesOn` (
+  `Rid` int(11) NOT NULL,
+  `Did` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `ClosesOn`
+--
+
+INSERT INTO `ClosesOn` (`Rid`, `Did`) VALUES
+(1, 1),
+(1, 2),
+(1, 11);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Comment`
+--
+
+CREATE TABLE `Comment` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `Eid` int(11) NOT NULL,
+  `Etype` int(11) NOT NULL,
+  `Uid` int(11) NOT NULL,
+  `Score` int(11) NOT NULL,
+  `Text` text NOT NULL,
+  `Date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=23 ;
+
+--
+-- Dumping data for table `Comment`
+--
+
+INSERT INTO `Comment` (`id`, `Eid`, `Etype`, `Uid`, `Score`, `Text`, `Date`) VALUES
+(7, 1, 0, 1, 3, 'Sérieux ratal', '2016-04-26 09:49:48'),
+(8, 1, 0, 1, 3, 'Test', '2016-04-26 09:50:53'),
+(9, 1, 0, 1, 5, 'J''ai kiffé', '2016-04-26 09:55:51'),
+(10, 1, 0, 57, 3, 'La vérité j''ai été mal reçu', '2016-04-26 09:57:22'),
+(12, 3, 0, 63, 3, 'J''ai mangé les bonnes boulettes sauce tomates c''est abusé', '2016-04-26 12:05:43'),
+(16, 4, 1, 1, 3, 'Tessssst 1 2 1 2', '2016-04-26 13:12:57'),
+(17, 5, 1, 61, 3, 'Sheraton wwuzup', '2016-04-26 13:17:20'),
+(18, 1, 0, 61, 5, 'Ça claque', '2016-04-26 18:56:00'),
+(19, 1, 0, 61, 5, 'Ça claque', '2016-04-26 18:56:02'),
+(20, 1, 0, 61, 5, 'Terrrrrrrible', '2016-04-26 18:59:21'),
+(21, 2, 0, 1, 3, 'Le meilleur snack de tout bx fou', '2016-04-26 21:07:20'),
+(22, 2, 0, 1, 1, 'Degueu mannes', '2016-04-26 21:17:41');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `HalfDay`
+--
+
+CREATE TABLE `HalfDay` (
+  `Did` int(11) NOT NULL AUTO_INCREMENT,
+  `Day` int(11) NOT NULL,
+  `Period` int(11) NOT NULL,
+  PRIMARY KEY (`Did`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=15 ;
+
+--
+-- Dumping data for table `HalfDay`
+--
+
+INSERT INTO `HalfDay` (`Did`, `Day`, `Period`) VALUES
+(1, 0, 0),
+(2, 0, 1),
+(3, 1, 0),
+(4, 1, 1),
+(5, 2, 0),
+(6, 2, 1),
+(7, 3, 0),
+(8, 3, 1),
+(9, 4, 0),
+(10, 4, 1),
+(11, 5, 0),
+(12, 5, 1),
+(13, 6, 0),
+(14, 6, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Hotel`
+--
+
+CREATE TABLE `Hotel` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `Name` varchar(255) NOT NULL,
+  `Address_Street` varchar(255) NOT NULL,
+  `Address_Num` int(11) NOT NULL,
+  `Address_Zip` int(11) NOT NULL,
+  `Address_City` varchar(255) NOT NULL,
+  `Address_Longitude` float NOT NULL,
+  `Address_Latitude` float NOT NULL,
+  `Site` varchar(255) NOT NULL,
+  `Tel` varchar(255) NOT NULL,
+  `CreationDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `CreatedBy` int(11) NOT NULL,
+  `Stars` tinyint(4) NOT NULL,
+  `Rooms` int(11) NOT NULL,
+  `ExamplePrice` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+
+--
+-- Dumping data for table `Hotel`
+--
+
+INSERT INTO `Hotel` (`id`, `Name`, `Address_Street`, `Address_Num`, `Address_Zip`, `Address_City`, `Address_Longitude`, `Address_Latitude`, `Site`, `Tel`, `CreationDate`, `CreatedBy`, `Stars`, `Rooms`, `ExamplePrice`) VALUES
+(4, 'Hilton', 'Avenue Louise', 223, 1060, 'Brussels', 4.3575, 50.8372, 'www.hiltonhotels.com', '12034314', '2016-04-25 22:00:00', 2, 2, 60, 40),
+(5, 'Sheraton', 'Rue du hm', 19, 1000, 'Brussels', 12.1235, 12.1235, 'www.sheraton.com', '0472/29 33 01', '2016-04-11 22:00:00', 1, 5, 40, 60);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Restaurant`
+--
+
+CREATE TABLE `Restaurant` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `Name` varchar(255) NOT NULL,
+  `Address_Street` varchar(255) NOT NULL,
+  `Address_Num` int(11) NOT NULL,
+  `Address_Zip` int(11) NOT NULL,
+  `Address_City` varchar(255) NOT NULL,
+  `Address_Longitude` float NOT NULL,
+  `Address_Latitude` float NOT NULL,
+  `Site` varchar(255) NOT NULL,
+  `Tel` varchar(255) NOT NULL,
+  `CreationDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `CreatedBy` int(11) NOT NULL,
+  `PriceRange_LowerBound` float NOT NULL,
+  `PriceRange_UpperBound` float NOT NULL,
+  `Capacity` int(11) NOT NULL,
+  `TakeAway` tinyint(1) NOT NULL,
+  `Delivery` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=41 ;
+
+--
+-- Dumping data for table `Restaurant`
+--
+
+INSERT INTO `Restaurant` (`id`, `Name`, `Address_Street`, `Address_Num`, `Address_Zip`, `Address_City`, `Address_Longitude`, `Address_Latitude`, `Site`, `Tel`, `CreationDate`, `CreatedBy`, `PriceRange_LowerBound`, `PriceRange_UpperBound`, `Capacity`, `TakeAway`, `Delivery`) VALUES
+(1, 'Pizzicoto', 'Rue Malibran', 12, 1050, 'Brussels', 4.3725, 50.8293, 'www.pizi.be', '031i4ikfv', '2016-04-06 22:00:00', 1, 8, 20, 25, 1, 0),
+(2, 'Snack Family', 'Rue du Midi', 77, 1000, 'Brussels', 9.12346, 90.1235, 'www.family.banlqnd', '942832', '2016-04-06 22:00:00', 1, 2, 10, 20, 1, 0),
+(3, 'Chez Theo', 'Avenue Paul Héger', 123, 1000, 'Brussels', 9.12346, 90.1235, 'www.c.po', '9428343/2', '2016-04-06 22:00:00', 1, 3, 10, 200, 1, 0),
+(4, 'Chez Théo Sodexho ULB', 'Avenue Paul Héger', 22, 1050, 'Ixelles', 4.38157, 50.8133, 'http://wwwdev.ulb.ac.be/restaurants/solbosch_s/r_pub.php3', '02/650 49 35', '2008-10-02 16:24:22', 66, 6, 6, 0, 1, 1),
+(5, 'Mirabelle', 'Chaussée de Boondael', 459, 1050, 'Ixelles', 4.38942, 50.8163, '', '02/649 51 73', '2008-10-02 16:24:22', 66, 40, 40, 0, 0, 0),
+(6, 'Mano a Mano', 'Rue Saint-Boniface', 8, 1050, 'Ixelles', 4.36481, 50.8358, '', '02/502 08 01', '2008-10-02 16:24:22', 66, 30, 30, 0, 1, 1),
+(7, 'Le belga queen', 'Rue Fossé-aux-Loups', 32, 1000, 'Bruxelles', 4.35448, 50.8503, 'http://www.belgaqueen.be/', '02/217 21 87', '2008-10-02 16:24:22', 66, 50, 50, 0, 0, 0),
+(8, 'Indochine', 'Rue Lesbroussart', 58, 1050, 'Ixelles', 4.36822, 50.8277, '', '02/649 96 15', '2008-10-02 16:24:22', 66, 20, 20, 0, 1, 1),
+(9, 'L''horloge du sud', 'Rue du Trône', 141, 1050, 'Ixelles', 4.37143, 50.8358, '', '02/512 18 64', '2008-10-02 16:24:22', 67, 30, 30, 0, 1, 0),
+(10, 'Grenier d''Elvire', 'Chaussée de Boondael', 339, 1050, 'Ixelles', 4.38384, 50.8188, 'http://www2.resto.be/grenierdelvire/', '02/648 43 48', '2008-10-02 16:24:22', 67, 20, 20, 0, 1, 1),
+(11, 'Grain de sel', 'Chaussée de Vleurgat', 9, 1050, 'Ixelles', 4.37122, 50.8275, '', '02/648 18 58', '2008-10-02 16:24:22', 67, 30, 30, 0, 1, 1),
+(12, 'Le Fin de Siècle', 'rue des Chartreux', 10, 1000, 'Bruxelles', 4.34739, 50.8488, 'http://www.lafindesiecle.be', '02/648 80 81', '2008-10-02 16:24:22', 67, 20, 20, 0, 0, 0),
+(13, 'Comme Chez Soi', 'Place Rouppe', 23, 1000, 'Bruxelles', 4.34569, 50.8426, 'www.commechezsoi.be', '02/512 29 21', '2008-10-02 16:24:22', 67, 100, 100, 0, 0, 0),
+(14, 'Le café des épices', 'Place Jourdan', 21, 1040, 'Etterbeek', 4.38158, 50.8372, 'www.cafedesepices.be', '02/280 43 17', '2008-10-02 16:24:22', 66, 40, 40, 0, 0, 0),
+(15, 'Bécasse', 'Chaussée de Boondael', 476, 1050, 'Ixelles', 4.38977, 50.8159, '', '02/649 06 41', '2008-10-02 16:24:22', 66, 40, 40, 0, 0, 0),
+(16, 'La Bastoche', 'Chaussée de Boondael', 473, 1050, 'Ixelles', 4.38973, 50.8159, '', '02/640 34 17', '2008-10-02 16:24:22', 66, 20, 20, 0, 0, 0),
+(17, 'Au Vieux Bruxelles', 'Rue Saint-Boniface', 35, 1050, 'Ixelles', 4.36373, 50.8363, '', '02/503 31 11', '2008-10-02 16:24:22', 67, 40, 40, 0, 0, 0),
+(18, 'Chez Théo Sodexho ULB', 'Avenue Paul Héger', 22, 1050, 'Ixelles', 4.38157, 50.8133, 'http://wwwdev.ulb.ac.be/restaurants/solbosch_s/r_pub.php3', '02/650 49 35', '2008-10-02 16:35:18', 66, 6, 6, 0, 1, 1),
+(19, 'Mirabelle', 'Chaussée de Boondael', 459, 1050, 'Ixelles', 4.38942, 50.8163, '', '02/649 51 73', '2008-10-02 16:35:18', 66, 40, 40, 0, 0, 0),
+(20, 'Mano a Mano', 'Rue Saint-Boniface', 8, 1050, 'Ixelles', 4.36481, 50.8358, '', '02/502 08 01', '2008-10-02 16:35:18', 66, 30, 30, 0, 1, 1),
+(21, 'Le belga queen', 'Rue Fossé-aux-Loups', 32, 1000, 'Bruxelles', 4.35448, 50.8503, 'http://www.belgaqueen.be/', '02/217 21 87', '2008-10-02 16:35:18', 66, 50, 50, 0, 0, 0),
+(22, 'Indochine', 'Rue Lesbroussart', 58, 1050, 'Ixelles', 4.36822, 50.8277, '', '02/649 96 15', '2008-10-02 16:35:18', 66, 20, 20, 0, 1, 1),
+(23, 'L''horloge du sud', 'Rue du Trône', 141, 1050, 'Ixelles', 4.37143, 50.8358, '', '02/512 18 64', '2008-10-02 16:35:18', 67, 30, 30, 0, 1, 0),
+(24, 'Grenier d''Elvire', 'Chaussée de Boondael', 339, 1050, 'Ixelles', 4.38384, 50.8188, 'http://www2.resto.be/grenierdelvire/', '02/648 43 48', '2008-10-02 16:35:18', 67, 20, 20, 0, 1, 1),
+(25, 'Grain de sel', 'Chaussée de Vleurgat', 9, 1050, 'Ixelles', 4.37122, 50.8275, '', '02/648 18 58', '2008-10-02 16:35:18', 67, 30, 30, 0, 1, 1),
+(26, 'Le Fin de Siècle', 'rue des Chartreux', 10, 1000, 'Bruxelles', 4.34739, 50.8488, 'http://www.lafindesiecle.be', '02/648 80 81', '2008-10-02 16:35:18', 67, 20, 20, 0, 0, 0),
+(27, 'Comme Chez Soi', 'Place Rouppe', 23, 1000, 'Bruxelles', 4.34569, 50.8426, 'www.commechezsoi.be', '02/512 29 21', '2008-10-02 16:35:18', 67, 100, 100, 0, 0, 0),
+(28, 'Le café des épices', 'Place Jourdan', 21, 1040, 'Etterbeek', 4.38158, 50.8372, 'www.cafedesepices.be', '02/280 43 17', '2008-10-02 16:35:18', 66, 40, 40, 0, 0, 0),
+(29, 'Bécasse', 'Chaussée de Boondael', 476, 1050, 'Ixelles', 4.38977, 50.8159, '', '02/649 06 41', '2008-10-02 16:35:18', 66, 40, 40, 0, 0, 0),
+(30, 'La Bastoche', 'Chaussée de Boondael', 473, 1050, 'Ixelles', 4.38973, 50.8159, '', '02/640 34 17', '2008-10-02 16:35:18', 66, 20, 20, 0, 0, 0),
+(31, 'Au Vieux Bruxelles', 'Rue Saint-Boniface', 35, 1050, 'Ixelles', 4.36373, 50.8363, '', '02/503 31 11', '2008-10-02 16:35:18', 67, 40, 40, 0, 0, 0),
+(32, 'Chez Théo Sodexho ULB', 'Avenue Paul Héger', 22, 1050, 'Ixelles', 4.38157, 50.8133, 'http://wwwdev.ulb.ac.be/restaurants/solbosch_s/r_pub.php3', '02/650 49 35', '2008-10-02 16:35:21', 66, 6, 6, 0, 1, 1),
+(33, 'Mirabelle', 'Chaussée de Boondael', 459, 1050, 'Ixelles', 4.38942, 50.8163, '', '02/649 51 73', '2008-10-02 16:35:21', 66, 40, 40, 0, 0, 0),
+(34, 'Mano a Mano', 'Rue Saint-Boniface', 8, 1050, 'Ixelles', 4.36481, 50.8358, '', '02/502 08 01', '2008-10-02 16:35:21', 66, 30, 30, 0, 1, 1),
+(35, 'Le belga queen', 'Rue Fossé-aux-Loups', 32, 1000, 'Bruxelles', 4.35448, 50.8503, 'http://www.belgaqueen.be/', '02/217 21 87', '2008-10-02 16:35:21', 66, 50, 50, 0, 0, 0),
+(36, 'Indochine', 'Rue Lesbroussart', 58, 1050, 'Ixelles', 4.36822, 50.8277, '', '02/649 96 15', '2008-10-02 16:35:21', 66, 20, 20, 0, 1, 1),
+(37, 'L''horloge du sud', 'Rue du Trône', 141, 1050, 'Ixelles', 4.37143, 50.8358, '', '02/512 18 64', '2008-10-02 16:35:21', 67, 30, 30, 0, 1, 0),
+(38, 'Grenier d''Elvire', 'Chaussée de Boondael', 339, 1050, 'Ixelles', 4.38384, 50.8188, 'http://www2.resto.be/grenierdelvire/', '02/648 43 48', '2008-10-02 16:35:21', 67, 20, 20, 0, 1, 1),
+(39, 'Grain de sel', 'Chaussée de Vleurgat', 9, 1050, 'Ixelles', 4.37122, 50.8275, '', '02/648 18 58', '2008-10-02 16:35:21', 67, 30, 30, 0, 1, 1),
+(40, 'Le Fin de Siècle', 'rue des Chartreux', 10, 1000, 'Bruxelles', 4.34739, 50.8488, 'http://www.lafindesiecle.be', '02/648 80 81', '2008-10-02 16:35:21', 67, 20, 20, 0, 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Tag`
+--
+
+CREATE TABLE `Tag` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `Name` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=37 ;
+
+--
+-- Dumping data for table `Tag`
+--
+
+INSERT INTO `Tag` (`id`, `Name`) VALUES
+(1, 'Italian'),
+(2, 'Amazing'),
+(3, 'Cheap'),
+(4, 'Brussels'),
+(5, 'Posh'),
+(6, 'Expensive'),
+(7, 'Small'),
+(8, 'Ixelles'),
+(9, 'Pizza'),
+(10, 'Steak'),
+(12, 'Arab'),
+(14, 'Pizza'),
+(15, 'Belgium'),
+(16, 'Parking'),
+(17, 'Clean'),
+(18, 'Spaghetti'),
+(19, 'Serious'),
+(20, 'Wonderful'),
+(21, 'Fumeur'),
+(22, 'Bon marché'),
+(23, 'Service au bar'),
+(24, 'Babyfoot'),
+(25, 'Terrasse'),
+(26, 'Happy hour'),
+(27, 'WiFi'),
+(28, 'Concert'),
+(29, 'Bar à vin'),
+(30, 'Echec'),
+(31, 'Bon rapport qualité/prix'),
+(32, 'Cuisine gastronomique'),
+(33, 'Fumoir'),
+(34, 'Fusion'),
+(35, 'Bon'),
+(36, 'Cuisine brasserie');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `User`
+--
+
+CREATE TABLE `User` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `Name` varchar(255) NOT NULL,
+  `MailAddress` varchar(255) NOT NULL,
+  `Password` varchar(255) NOT NULL,
+  `Privileges` tinyint(1) NOT NULL,
+  `CreationDate` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=66 ;
+
+--
+-- Dumping data for table `User`
+--
+
+INSERT INTO `User` (`id`, `Name`, `MailAddress`, `Password`, `Privileges`, `CreationDate`) VALUES
+(1, 'CharlesHamesse', 'charles.hamesse@gmail.com', '$2a$10$Ekycu6ZZX0ki5L3yK8UmU.teHJWkhGa.GAvy45mDKxg.15r2zgbsq', 1, '2016-04-12 12:31:28'),
+(2, 'MaurinVerrijdt', 'bloblo@gmail.com', 'blabla', 1, '2016-04-06 22:00:00'),
+(57, 'DevUser1460136764017', 'DevUser1460136764017@mail.com', '$2a$10$VoqjRyPpUFMFZQYGCvm8i.t.JXYRtXCS6fFL6brKdxnJrzk4IW.cK', 0, '2016-04-08 17:32:48'),
+(58, 'DevUser1460136777537', 'DevUser1460136777537@mail.com', '$2a$10$yXa6ExvCzTpA4HrpCbojWulqmahulOj1WSfRiVheXlVSdasijgFzW', 0, '2016-04-08 17:32:58'),
+(59, 'DevUser1460136782867', 'DevUser1460136782867@mail.com', '$2a$10$C8PKn/31/V2CS7kioD4e..7ZpdKzXnOIoblQnWhqhblLx99KhWw56', 0, '2016-04-08 17:33:04'),
+(60, 'DevUser1460136785289', 'DevUser1460136785289@mail.com', '$2a$10$VnI/3LMqmkZeIrojU8eSy.DIL4KS6C5XJiAT57173WgNPpPzfKa22', 0, '2016-04-08 17:33:06'),
+(61, 'DevUser1460136786664', 'DevUser1460136786664@mail.com', '$2a$10$lvscmZq1KHUAp0/m5PrUDeFY6LvssI5E/085YMQZ8MQY5AVz0ABNu', 0, '2016-04-08 17:33:07'),
+(62, 'DevUser1460136945673', 'DevUser1460136945673@mail.com', '$2a$10$2SERc2e6dXZ0HKx1Dj8e3egB9tWqjpn5WZMvKfbN3sYxXmtYESoaO', 0, '2016-04-08 17:35:47'),
+(63, 'DevUser1460364073306', 'DevUser1460364073306@mail.com', '$2a$10$eB/RCIoqHNu4fjllgsSKrO6MhTzOblk438Kl/s9QMXKoHdXvCRAmC', 0, '2016-04-11 08:41:14'),
+(64, 'DevUser1460387760763', 'DevUser1460387760763@mail.com', '$2a$10$s0XuiNB2dEdFURIbwA.ri.owRyAwo4YFYNUCC0smE13sLceBv4/Ji', 0, '2016-04-11 15:16:02'),
+(65, 'DevUser1460463635510', 'DevUser1460463635510@mail.com', '$2a$10$7aIDo6UoxEQmYMl18WgF9Oie1Rs5cGY1prHVlv66QF//fVECWmY3u', 0, '2016-04-12 12:20:36');
