@@ -89,17 +89,40 @@ include('header.php');
         $R2_estBrendaLikes = $R1_estBrendaLikes;
 
         $R2_usersWhoLikeSameEstAsBrenda = "
-        SELECT U2.Name, U2.id
-        FROM User U2, Comment C2, (" . $R1_estBrendaLikes . ") E2
-        WHERE C2.Uid = U2.id
-        AND C2.Eid = E2.id
-        AND C2.Etype = E2.EType
-        AND C2.Score >= 3
-        GROUP BY U2.Name
-        HAVING COUNT(E2.Name) >= 3";
+        SELECT *
+        FROM User U2
+        WHERE NOT EXISTS
+          ( SELECT E2.Name
+          FROM (" . $R2_estBrendaLikes . ") E2
+          WHERE NOT EXISTS
+            ( SELECT *
+            FROM Comment C2
+            WHERE C2.Eid = E2.id
+            AND C2.Etype = E2.EType
+            AND C2.Score >= 3
+            AND C2.Uid = U2.id) )
+        ";
+        $R2_allEst = "
+        (SELECT E.Name, E.id, 0 as EType
+        FROM Restaurant E)
+        UNION
+        (SELECT E.Name, E.id, 1 as EType
+        FROM Hotel E)
+        UNION
+        (SELECT E.Name, E.id, 2 as EType
+        FROM Bar E)";
 
-        $R1 = $R1_usersWhoLike; //usersWhoLike;//$estBrendaLikes;//$usersWhoLike;
-        $prep = $pdo->prepare($R1);
+        $R2_estLikedByThem = "
+        SELECT E3.Name
+        FROM (".$R2_allEst.") E3, (".$R2_usersWhoLikeSameEstAsBrenda.") U3, Comment C3
+        WHERE C3.Score >= 3
+        AND C3.Uid = U3.id
+        AND C3.Eid = E3.id
+        AND C3.Etype = E3.EType
+        GROUP BY E3.id
+        ";
+        $R2 = $R2_estLikedByThem; //usersWhoLike;//$estBrendaLikes;//$usersWhoLike;
+        $prep = $pdo->prepare($R2);
         $prep->execute();
         $results = $prep->fetchAll();
         echo json_encode($results);
@@ -109,6 +132,7 @@ include('header.php');
           echo var_dump($prep->errorInfo());
         }
         ?></pre>
+        Attention: peut-être enlever ceux que Brenda apprécie..
         <!--
 
         R3
@@ -117,15 +141,7 @@ include('header.php');
         <h3>R3: Tous les établissements pour lesquels il y a au plus un commentaire</h3>
         <pre><?php
         $R3 = 'Brenda';
-        $R3_allEst = "
-        (SELECT E.Name, E.id, 0 as EType
-        FROM Restaurant E)
-        UNION
-        (SELECT E.Name, E.id, 1 as EType
-        FROM Hotel E)
-        UNION
-        (SELECT E.Name, E.id, 2 as EType
-        FROM Bar E)";
+        $R3_allEst = $R2_allEst;
 
         $R3_maxOneComment = "
         SELECT E.Name
