@@ -41,7 +41,7 @@ include('header.php');
         FROM (".$R1_allEst.") E, Comment C, User U
         WHERE E.Etype = C.Etype
         AND E.id = C.Eid
-        AND C.Score >=3
+        AND C.Score >=4
         AND U.Name = '".$R1_userName."'
         AND C.Uid = U.id
         GROUP BY E.Name
@@ -53,7 +53,7 @@ include('header.php');
         WHERE C2.Uid = U2.id
         AND C2.Eid = E2.id
         AND C2.Etype = E2.EType
-        AND C2.Score >= 3
+        AND C2.Score >= 4
         GROUP BY U2.Name
         HAVING COUNT(E2.Name) >= 3";
 
@@ -88,7 +88,7 @@ include('header.php');
             FROM Comment C2
             WHERE C2.Eid = E2.id
             AND C2.Etype = E2.EType
-            AND C2.Score >= 3
+            AND C2.Score >= 4
             AND C2.Uid = U2.id) )
         ";
         $R2_allEst = $R1_allEst;
@@ -96,7 +96,7 @@ include('header.php');
         $R2_estLikedByThem = "
         SELECT E3.Name
         FROM (".$R2_allEst.") E3, (".$R2_usersWhoLikeSameEstAsBrenda.") U3, Comment C3
-        WHERE C3.Score >= 3
+        WHERE C3.Score >= 4
         AND C3.Uid = U3.id
         AND C3.Eid = E3.id
         AND C3.Etype = E3.EType
