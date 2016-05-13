@@ -216,8 +216,6 @@ include('header.php');
         <pre><?php
         $R6_allEst = $R2_allEst;
 
-        $R6_allEst = $R2_allEst;
-
         $R6_scores = "SELECT E.Name, E.id, E.EType, AVG(C.Score) as CS
         FROM (".$R5_allEst.") E, Comment C
         WHERE C.Etype = E.EType AND C.Eid = E.id
@@ -229,9 +227,11 @@ include('header.php');
         GROUP BY A.Tid
         HAVING COUNT(DISTINCT A.Eid) >= 5";
 
-        $R6 = "SELECT T.id, T.Name, AVG(S.CS), T.Count
+        $R6_addsTagGroupedByEid = "SELECT * FROM AddsTag GROUP BY Tid, Eid, Etype";
+
+        $R6 = "SELECT T.Name, AVG(S.CS), T.Count as EstablishmentsWithThisTag
         FROM (".$R6_tags.") T
-        JOIN AddsTag A ON T.id = A.Tid
+        JOIN (".$R6_addsTagGroupedByEid.") A ON T.id = A.Tid
         JOIN (".$R6_scores.") S ON A.Eid = S.id AND A.Etype = S.EType
         GROUP BY T.id
         ORDER BY AVG(S.CS) DESC";
