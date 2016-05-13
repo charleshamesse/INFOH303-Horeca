@@ -13,12 +13,6 @@ include('header.php');
   <!-- CSS -->
   <link rel="stylesheet" href="../../assets/css/bootstrap.min.css" media="screen">
   <link rel="stylesheet" href="../../assets/css/custom.css" media="screen">
-  <style type="text/css">
-  pre, div{
-    overflow:visible;
-    white-space:pre-line;
-  }
-  </style>
 </head>
 <body>
   <div class="container">
@@ -33,30 +27,25 @@ include('header.php');
         <h3>R1: Tous les utilisateurs qui apprécient au moins 3 établissements que Brenda apprécie</h3>
         <pre><?php
         $R1_userName = 'Brenda';
+        $R1_allEst = "
+        (SELECT E.Name, E.id, E.CreatedBy, 0 as EType
+        FROM Restaurant E)
+        UNION
+        (SELECT E.Name, E.id, E.CreatedBy, 1 as EType
+        FROM Hotel E)
+        UNION
+        (SELECT E.Name, E.id, E.CreatedBy, 2 as EType
+        FROM Bar E)";
         $R1_estBrendaLikes = "
-        (SELECT E.Name, E.id, 0 as EType
-        FROM Restaurant E
-        RIGHT JOIN Comment C ON C.Eid = E.id AND C.Etype = 0
-        RIGHT JOIN User U ON C.Uid = U.id
-        WHERE U.Name = '".$R1_userName."'
-        AND C.Score >= 3
-        AND E.Name IS NOT NULL)
-        UNION
-        (SELECT E.Name, E.id, 1 as EType
-        FROM Hotel E
-        RIGHT JOIN Comment C ON C.Eid = E.id AND C.Etype = 1
-        RIGHT JOIN User U ON C.Uid = U.id
-        WHERE U.Name = '".$R1_userName."'
-        AND C.Score >= 3
-        AND E.Name IS NOT NULL)
-        UNION
-        (SELECT E.Name, E.id, 2 as EType
-        FROM Bar E
-        RIGHT JOIN Comment C ON C.Eid = E.id AND C.Etype = 2
-        RIGHT JOIN User U ON C.Uid = U.id
-        WHERE U.Name = '".$R1_userName."'
-        AND C.Score >= 3
-        AND E.Name IS NOT NULL)";
+        SELECT E.Name, E.id, E.EType
+        FROM (".$R1_allEst.") E, Comment C, User U
+        WHERE E.Etype = C.Etype
+        AND E.id = C.Eid
+        AND C.Score >=3
+        AND U.Name = '".$R1_userName."'
+        AND C.Uid = U.id
+        GROUP BY E.Name
+        ";
 
         $R1_usersWhoLike = "
         SELECT U2.Name
@@ -71,8 +60,8 @@ include('header.php');
         $R1 = $R1_usersWhoLike; //usersWhoLike;//$estBrendaLikes;//$usersWhoLike;
         $prep = $pdo->prepare($R1);
         $prep->execute();
-        $results = $prep->fetchAll();
-        echo json_encode($results);
+        $results = $prep->fetchAll(PDO::FETCH_ASSOC);
+        var_dump($results);
 
         if($prep->errorInfo()[1] != null) {
           echo "error:";
@@ -102,15 +91,7 @@ include('header.php');
             AND C2.Score >= 3
             AND C2.Uid = U2.id) )
         ";
-        $R2_allEst = "
-        (SELECT E.Name, E.id, 0 as EType
-        FROM Restaurant E)
-        UNION
-        (SELECT E.Name, E.id, 1 as EType
-        FROM Hotel E)
-        UNION
-        (SELECT E.Name, E.id, 2 as EType
-        FROM Bar E)";
+        $R2_allEst = $R1_allEst;
 
         $R2_estLikedByThem = "
         SELECT E3.Name
@@ -124,12 +105,12 @@ include('header.php');
         $R2 = $R2_estLikedByThem; //usersWhoLike;//$estBrendaLikes;//$usersWhoLike;
         $prep = $pdo->prepare($R2);
         $prep->execute();
-        $results = $prep->fetchAll();
-        echo json_encode($results);
+        $results = $prep->fetchAll(PDO::FETCH_ASSOC);
+        echo var_dump($results);
 
         if($prep->errorInfo()[1] != null) {
           echo "error:";
-          echo var_dump($prep->errorInfo());
+          var_dump($prep->errorInfo());
         }
         ?></pre>
         Attention: peut-être enlever ceux que Brenda apprécie..
@@ -148,13 +129,22 @@ include('header.php');
         FROM (".$R3_allEst.") E, Comment C
         WHERE C.Eid = E.id AND C.Etype = E.EType
         GROUP BY E.Name
-        HAVING COUNT(C.Score) <= 1";
+        HAVING COUNT(C.id) <= 1";
 
-        $R3 = $R3_maxOneComment;
+        $R3_bis = "SELECT E.Name, E.id
+        FROM (".$R3_allEst.") E
+        WHERE NOT EXISTS (
+          SELECT E.id
+          FROM Comment C
+          WHERE C.Eid = E.id AND C.Etype = E.EType
+          HAVING COUNT(C.id) > 1
+        )";
+
+        $R3 = $R3_bis;//$R3_maxOneComment;
         $prep = $pdo->prepare($R3);
         $prep->execute();
-        $results = $prep->fetchAll();
-        echo json_encode($results);
+        $results = $prep->fetchAll(PDO::FETCH_ASSOC);
+        echo var_dump($results);
 
         if($prep->errorInfo()[1] != null) {
           echo "error:";
@@ -162,11 +152,102 @@ include('header.php');
         }
         ?></pre>
         <h3>R4: La liste des administrateurs n'ayant pas commenté tous les établissements qu'ils ont crées</h3>
-        <pre></pre>
+        <pre><?php
+        $R4_allEst = $R2_allEst;
+
+        $R4_adminsWhoCommentedAll = "
+        SELECT U.id
+        FROM User U
+        WHERE Privileges=1
+        AND NOT EXISTS
+          ( SELECT E.Name
+          FROM (" . $R4_allEst. ") E
+          WHERE E.CreatedBy = U.id
+          AND NOT EXISTS
+            ( SELECT *
+            FROM Comment C
+            WHERE C.Eid = E.id
+            AND C.Etype = E.EType
+            AND C.Uid = U.id) )";
+
+        $R4_allAdmins = "
+        SELECT *
+        FROM User U
+        WHERE U.Privileges = 1
+        AND U.id NOT IN (".$R4_adminsWhoCommentedAll.")
+        ";
+
+        $R4 = $R4_allAdmins;
+        $prep = $pdo->prepare($R4);
+        $prep->execute();
+        $results = $prep->fetchAll(PDO::FETCH_ASSOC);
+        echo var_dump($results);
+
+        if($prep->errorInfo()[1] != null) {
+          echo "error:";
+          echo var_dump($prep->errorInfo());
+        }
+        ?></pre>
         <h3>R5: La liste des établissements ayant au minimum trois commentaires, classée selon la moyenne des scores attribués</h3>
-        <pre></pre>
+        <pre><?php
+
+        $R5_allEst = $R2_allEst;
+
+        $R5 = "SELECT E.Name, AVG(C.Score) as CS
+        FROM (".$R5_allEst.") E, Comment C
+        WHERE C.Etype = E.EType AND C.Eid = E.id
+        GROUP BY E.id, E.EType
+        HAVING COUNT(C.id) >= 3
+        ORDER BY CS DESC";
+
+        $prep = $pdo->prepare($R5);
+
+        $prep->execute();
+        $results = $prep->fetchAll(PDO::FETCH_ASSOC);
+        echo var_dump($results);
+
+        if($prep->errorInfo()[1] != null) {
+          echo "error:";
+          echo var_dump($prep->errorInfo());
+        }
+
+        ?></pre>
         <h3>R6: La liste des labels étant appliqués à au moins 5 établissements, classée selon la moyenne des scores des établissements ayant ce label</h3>
-        <pre></pre>
+        <pre><?php
+        $R6_allEst = $R2_allEst;
+
+        $R6_allEst = $R2_allEst;
+
+        $R6_scores = "SELECT E.Name, E.id, E.EType, AVG(C.Score) as CS
+        FROM (".$R5_allEst.") E, Comment C
+        WHERE C.Etype = E.EType AND C.Eid = E.id
+        GROUP BY E.id, E.EType";
+
+        $R6_tags = "SELECT T.Name, T.id, COUNT(DISTINCT A.Eid) AS Count
+        FROM AddsTag A, Tag T
+        WHERE A.Tid = T.id
+        GROUP BY A.Tid
+        HAVING COUNT(DISTINCT A.Eid) >= 5";
+
+        $R6 = "SELECT T.id, T.Name, AVG(S.CS), T.Count
+        FROM (".$R6_tags.") T
+        JOIN AddsTag A ON T.id = A.Tid
+        JOIN (".$R6_scores.") S ON A.Eid = S.id AND A.Etype = S.EType
+        GROUP BY T.id
+        ORDER BY AVG(S.CS) DESC";
+
+        $prep = $pdo->prepare($R6);
+
+        $prep->execute();
+        $results = $prep->fetchAll(PDO::FETCH_ASSOC);
+        echo var_dump($results);
+
+        if($prep->errorInfo()[1] != null) {
+          echo "error:";
+          echo var_dump($prep->errorInfo());
+        }
+
+        ?></pre>
 
       </div>
     </div>

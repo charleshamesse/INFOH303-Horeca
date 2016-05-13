@@ -73,7 +73,7 @@ function buildSql($cafe, $pdo) {
   $creationDate = $date->format('Y-m-d G:i:s');
 
   // User
-  $userid = getUserIdByNameOrCreateIt($cafe["nickname"], $pdo);
+  $userid = getUserIdByNameOrCreateIt($cafe["nickname"], $pdo, 1);
 
   $sql = "INSERT INTO Bar
   (Name,
@@ -106,20 +106,29 @@ function buildSql($cafe, $pdo) {
     return $sql;
   }
 
-  function getUserIdByNameOrCreateIt($name, $pdo) {
+  function getUserIdByNameOrCreateIt($name, $pdo, $admin) {
 
     $user_sql = "SELECT id FROM User WHERE Name='" . $name . "'";
     $prep = $pdo->prepare($user_sql);
     $prep->execute();
     $result = $prep->fetch();
-    if($result)
+    if($result) {
+      // If user commented before creating an est
+      if($result["Privileges"] < $adminOrNot) {
+        $user_sql = "UPDATE User SET Privileges='".$adminOrNot."' WHERE id='".$result["id"]."'";
+        $prep = $pdo->prepare($user_sql);
+        $prep->execute();
+      }
       return $result["id"];
+    }
     else {
       // Create it
       $user_sql = "INSERT INTO User (Name, MailAddress, Password, Privileges)
-      VALUES('".$name."', '".$name."@mail.com', '".$name."', '0')";
+      VALUES('".$name."', '".$name."@mail.com', '".$name."', '".$admin."')";
       $prep = $pdo->prepare($user_sql);
       $prep->execute();
+      //echo "<span class='text-success'>User successfully inserted. ID: " . $id . ", admin: ".$admin."</span><br />";
+
       // Get it
       $user_sql = "SELECT id FROM User WHERE Name='" . $name . "'";
       $prep = $pdo->prepare($user_sql);
@@ -155,7 +164,7 @@ function buildSql($cafe, $pdo) {
     while($comments->Comment[$i] != null) {
       $c = $comments->Comment[$i];
 
-      $uid = getUserIdByNameOrCreateIt($c["nickname"], $pdo);
+      $uid = getUserIdByNameOrCreateIt($c["nickname"], $pdo, 0);
       $comment_sql = "INSERT INTO Comment (Eid, Etype, Uid, Score, Text, Date)
       VALUES('".$eid."', '2', '".$uid."', '".$c["score"]."', '". addslashes($c)."', '". formatDate($c["date"]) ."')";
       $prep = $pdo->prepare($comment_sql);
@@ -185,7 +194,7 @@ function buildSql($cafe, $pdo) {
         $u = $t->User[$k];
 
         // AddsTag
-        $uid = getUserIdByNameOrCreateIt($u["nickname"], $pdo);
+        $uid = getUserIdByNameOrCreateIt($u["nickname"], $pdo, 0);
         $tid = getTagIdByNameOrCreateIt($t["name"], $pdo);
         $tag_sql = "INSERT INTO AddsTag (Tid, Uid, Etype, Eid)
         VALUES('".$tid."', '".$uid."', '2', '".$eid."')";
